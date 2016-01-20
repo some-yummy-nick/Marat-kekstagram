@@ -3,8 +3,8 @@
 [![Build status][travis-image]][travis-url]
 [![Dependency status][dependency-image]][dependency-url]
 
-* Студент: Марат Шаймарданов.
-* Наставник: Михаил Баранов.
+* Студент: [Марат Шаймарданов](https://htmlacademy.ru/profile/id31950).
+* Наставник: [Михаил Баранов](https://htmlacademy.ru/profile/id14760).
 
 ### Немного о себе
 
