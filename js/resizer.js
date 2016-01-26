@@ -140,7 +140,7 @@
 
       this._ctx.font = '20px Open Sans';
       this._ctx.fillStyle = '#fff';
-      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, -this._image.naturalWidth/10,this._image.naturalHeight/2.5);
+      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, -this._image.naturalWidth / 10, this._image.naturalHeight / 2.5);
 
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
