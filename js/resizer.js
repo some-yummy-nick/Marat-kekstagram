@@ -119,6 +119,36 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
+      this._ctx.fillStyle = 'rgba(0,0,0,0.8)'; // Затемнение 80% всего рисунка
+      this._ctx.fillRect(
+          displX,
+          displY,
+          this._image.naturalWidth,
+          this._image.naturalHeight);
+
+      this._ctx.globalCompositeOperation = "destination-out"; // Вырезание прямоугольника
+
+      this._ctx.fillRect(
+          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
+          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
+          this._resizeConstraint.side - this._ctx.lineWidth / 2,
+          this._resizeConstraint.side - this._ctx.lineWidth / 2);
+
+        this._ctx.font = '20px Open Sans';
+        this._ctx.fillStyle = '#fff';
+        this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, -this._image.naturalWidth/10, -this._image.naturalHeight/2.5);
+
+        this._ctx.fillStyle = '#ffe753';
+        this._ctx.fillStyle = 'red';
+
+
+          var drawCicle = function(x,y,ctx) {
+        ctx.arc(-x,
+                -y,
+                5,0, Math.PI*2);
+       ctx.fill();
+          }
+
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
