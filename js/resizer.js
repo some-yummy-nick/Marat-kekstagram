@@ -119,30 +119,10 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
-var containerX = -this._container.width / 2;
+      var containerX = -this._container.width / 2;
       var containerY = -this._container.height / 2;
       var fillRectStart = this._resizeConstraint.side / 2;
 
-// this._ctx.arc(
-//          (-fillRectStart - this._ctx.lineWidth / 2),
-//          (-fillRectStart - this._ctx.lineWidth / 2),
-//               5,0, Math.PI*2);
-this._ctx.fillStyle = 'red';
-   var drawCicle = function(x,y,ctx) {
-        ctx.arc(x,
-                y,
-                5,0, Math.PI*2);
-       ctx.fill();
-          }
-var i=15;
-
-while(i<this._resizeConstraint.side){
-  drawCicle(
-        (-fillRectStart - this._ctx.lineWidth / 2)+i,
-         (-fillRectStart - this._ctx.lineWidth / 2),
-                this._ctx);
-  i+=15;
-}
       this._ctx.fillStyle = 'rgba(0, 0, 0, .8)';
       this._ctx.moveTo(containerX, containerY);
       this._ctx.lineTo(containerX + this._container.width, containerY);
@@ -158,9 +138,9 @@ while(i<this._resizeConstraint.side){
 
       this._ctx.fill();
 
-        this._ctx.font = '20px Open Sans';
-        this._ctx.fillStyle = '#fff';
-        this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, -this._image.naturalWidth/10, -this._image.naturalHeight/2.5);
+      this._ctx.font = '20px Open Sans';
+      this._ctx.fillStyle = '#fff';
+      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, -this._image.naturalWidth/10,this._image.naturalHeight/2.5);
 
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
