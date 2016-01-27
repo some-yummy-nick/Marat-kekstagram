@@ -91,10 +91,6 @@
   var aboveForm = resizeForm['resize-y'];
   var sideForm = resizeForm['resize-size'];
 
-  aboveForm.min = 1;
-  leftForm.min = 1;
-  sideForm.min = 1;
-
 //
 //function resizeFormIsValid() {
 //  if((leftForm + sideForm <= currentResizer._image.naturalWidth) && (aboveForm + sideForm <= currentResizer._image.naturalHeight)){
@@ -154,6 +150,14 @@
    * и показывается форма кадрирования.
    * @param {Event} evt
    */
+
+  aboveForm.min = 1;
+  leftForm.min = 1;
+  sideForm.min = 1;
+  aboveForm.value = 40;
+  leftForm.value = 30;
+  sideForm.value = 400;
+
   uploadForm.onchange = function(evt) {
     var element = evt.target;
     if (element.id === 'upload-file') {
@@ -175,6 +179,17 @@
           resizeForm.classList.remove('invisible');
 
           hideMessage();
+
+          function resizeFormIsValid() {
+            if ((+sideForm.value + +leftForm.value <= currentResizer._image.naturalWidth) && (+sideForm.value + +aboveForm.value <= currentResizer._image.naturalHeight )) {
+              return true;
+            }
+            return false;
+          }
+          aboveForm.onchange = function() {
+            resizeFormIsValid();
+          };
+
         };
 
         fileReader.readAsDataURL(element.files[0]);
@@ -185,7 +200,7 @@
       }
     }
   };
-console.log(currentResizer._image.naturalWidth);
+
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
