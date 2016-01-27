@@ -87,6 +87,21 @@
    */
   var resizeForm = document.forms['upload-resize'];
 
+  var leftForm = resizeForm['resize-x'];
+  var aboveForm = resizeForm['resize-y'];
+  var sideForm = resizeForm['resize-size'];
+
+  aboveForm.min = 1;
+  leftForm.min = 1;
+  sideForm.min = 1;
+
+//
+//function resizeFormIsValid() {
+//  if((leftForm + sideForm <= currentResizer._image.naturalWidth) && (aboveForm + sideForm <= currentResizer._image.naturalHeight)){
+//    return true;
+//  }
+//   return false;
+//}
   /**
    * Форма добавления фильтра.
    * @type {HTMLFormElement}
@@ -170,7 +185,7 @@
       }
     }
   };
-
+console.log(currentResizer._image.naturalWidth);
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
