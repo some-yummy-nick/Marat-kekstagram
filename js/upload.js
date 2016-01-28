@@ -72,9 +72,13 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    return true;
+    if (currentResizer) {
+      if ((Number(sideForm.value) + Number(leftForm.value) <= currentResizer._image.naturalWidth) && (Number(sideForm.value) + Number(aboveForm.value) <= currentResizer._image.naturalHeight )) {
+        return true;
+      }
+      return false;
+    }
   }
-
   /**
    * Форма загрузки изображения.
    * @type {HTMLFormElement}
@@ -91,13 +95,12 @@
   var aboveForm = resizeForm['resize-y'];
   var sideForm = resizeForm['resize-size'];
 
-//
-//function resizeFormIsValid() {
-//  if((leftForm + sideForm <= currentResizer._image.naturalWidth) && (aboveForm + sideForm <= currentResizer._image.naturalHeight)){
-//    return true;
-//  }
-//   return false;
-//}
+  aboveForm.min = 1;
+  leftForm.min = 1;
+  sideForm.min = 1;
+  aboveForm.value = 40;
+  leftForm.value = 30;
+  sideForm.value = 400;
   /**
    * Форма добавления фильтра.
    * @type {HTMLFormElement}
@@ -151,13 +154,6 @@
    * @param {Event} evt
    */
 
-  aboveForm.min = 1;
-  leftForm.min = 1;
-  sideForm.min = 1;
-  aboveForm.value = 40;
-  leftForm.value = 30;
-  sideForm.value = 400;
-
   uploadForm.onchange = function(evt) {
     var element = evt.target;
     if (element.id === 'upload-file') {
@@ -179,16 +175,6 @@
           resizeForm.classList.remove('invisible');
 
           hideMessage();
-
-          function resizeFormIsValid() {
-            if ((+sideForm.value + +leftForm.value <= currentResizer._image.naturalWidth) && (+sideForm.value + +aboveForm.value <= currentResizer._image.naturalHeight )) {
-              return true;
-            }
-            return false;
-          }
-          aboveForm.onchange = function() {
-            resizeFormIsValid();
-          };
 
         };
 
@@ -256,6 +242,9 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+var dateToExpire = +Date.now() + 3*24*60*60*100;
+var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+    document.cookie = "upload-filter=" + '-chrome'+ ';expires=' + formattedDateToExpire;
   };
 
   /**
