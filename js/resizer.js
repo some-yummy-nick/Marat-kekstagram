@@ -119,6 +119,31 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
+      var containerX = -this._container.width / 2;
+      var containerY = -this._container.height / 2;
+      var fillRectStart = this._resizeConstraint.side / 2;
+
+      this._ctx.fillStyle = 'rgba(0, 0, 0, .8)';
+      this._ctx.moveTo(containerX, containerY);
+      this._ctx.lineTo(containerX + this._container.width, containerY);
+      this._ctx.lineTo(containerX + this._container.width, containerY + this._container.height);
+      this._ctx.lineTo(containerX, containerY + this._container.height);
+      this._ctx.lineTo(containerX, containerY);
+
+      this._ctx.moveTo(-fillRectStart - this._ctx.lineWidth, -fillRectStart - this._ctx.lineWidth);
+      this._ctx.lineTo(-fillRectStart - this._ctx.lineWidth, fillRectStart - this._ctx.lineWidth / 2);
+      this._ctx.lineTo(fillRectStart - this._ctx.lineWidth / 2, fillRectStart - this._ctx.lineWidth / 2);
+      this._ctx.lineTo(fillRectStart - this._ctx.lineWidth / 2, -fillRectStart - this._ctx.lineWidth);
+      this._ctx.lineTo(-fillRectStart - this._ctx.lineWidth, -fillRectStart - this._ctx.lineWidth);
+
+      this._ctx.fill();
+
+      this._ctx.font = '20px Open Sans';
+      this._ctx.fillStyle = '#fff';
+      this._ctx.textAlign = 'center';
+      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, 0, (-this._resizeConstraint.side / 2) - (this._ctx.lineWidth + this._ctx.lineWidth / 2));
+
+
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
