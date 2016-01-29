@@ -73,7 +73,7 @@
    */
   function resizeFormIsValid() {
     if (currentResizer) {
-      if ((+sideForm.value + +leftForm.value <= currentResizer._image.naturalWidth) && (+sideForm.value + +aboveForm.value <= currentResizer._image.naturalHeight )) {
+      if ((Number(sideForm.value) + Number(leftForm.value) <= currentResizer._image.naturalWidth) && (Number(sideForm.value) + Number(aboveForm.value) <= currentResizer._image.naturalHeight )) {
         return true;
       }
     }
