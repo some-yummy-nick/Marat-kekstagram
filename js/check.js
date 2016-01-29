@@ -9,7 +9,7 @@ var multyplyArrays = function (a, b) {
     return result;
 }
 
-var sum = function (a, b) {
+var sum = function (a) {
     var result = 0;
     for (var i = 0; i < a.length; i++) {
         result += a[i];
@@ -31,7 +31,7 @@ var getMessage = function (a, b) { // функция для подсчета с�
         if (typeof (b) == 'object') {
             return "Общая площадь артефактов сжатия: " + multyplyArrays(a, b) + " пикселей";
         } else {
-            return "Количество красных точек во всех строчках изображения: " + sum(a, b);
+            return "Количество красных точек во всех строчках изображения: " + sum(a);
         }
     }
 }
