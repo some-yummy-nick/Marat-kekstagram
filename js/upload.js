@@ -6,7 +6,7 @@
  */
 
 'use strict';
-
+/*global docCookies*/
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -72,7 +72,12 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    return true;
+    if (currentResizer) {
+      if ((Number(sideForm.value) + Number(leftForm.value) <= currentResizer._image.naturalWidth) && (Number(sideForm.value) + Number(aboveForm.value) <= currentResizer._image.naturalHeight )) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -92,12 +97,19 @@
    * @type {HTMLFormElement}
    */
   var filterForm = document.forms['upload-filter'];
-
+  var filterCookie = docCookies.getItem('upload-filter');
+  var filterFormControls = filterForm.querySelector('.upload-filter-controls');
+  var filterinput = filterFormControls.querySelectorAll('input');
+  for (var i = 0; i < filterinput.length; i++ ) {
+    if (filterinput[i].id === filterCookie ) {
+      filterinput[i].checked = 'checked';
+    }
+  }
   /**
    * @type {HTMLImageElement}
    */
   var filterImage = filterForm.querySelector('.filter-image-preview');
-
+  filterImage.className = docCookies.getItem('filter-image-preview');
   /**
    * @type {HTMLElement}
    */
@@ -139,6 +151,17 @@
    * и показывается форма кадрирования.
    * @param {Event} evt
    */
+  var leftForm = resizeForm['resize-x'];
+  var aboveForm = resizeForm['resize-y'];
+  var sideForm = resizeForm['resize-size'];
+
+  aboveForm.min = 1;
+  leftForm.min = 1;
+  sideForm.min = 1;
+  leftForm.value = 40;
+  aboveForm.value = 40;
+  sideForm.value = 400;
+
   uploadForm.onchange = function(evt) {
     var element = evt.target;
     if (element.id === 'upload-file') {
@@ -158,7 +181,6 @@
 
           uploadForm.classList.add('invisible');
           resizeForm.classList.remove('invisible');
-
           hideMessage();
         };
 
@@ -169,6 +191,7 @@
         showMessage(Action.ERROR);
       }
     }
+
   };
 
   /**
@@ -191,6 +214,7 @@
    * кропнутое изображение в форму добавления фильтра и показывает ее.
    * @param {Event} evt
    */
+
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
 
@@ -226,6 +250,11 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+
+    var dateToExpire = Number(Date.now()) + 228 * 24 * 60 * 60 * 100;
+    var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+    docCookies.setItem('upload-filter', filterMap.className, formattedDateToExpire);
+    docCookies.setItem('filter-image-preview', filterImage.className, formattedDateToExpire);
   };
 
   /**
@@ -252,6 +281,7 @@
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
+    filterMap.className = 'upload-' + filterMap[selectedFilter];
   };
 
   cleanupResizer();
