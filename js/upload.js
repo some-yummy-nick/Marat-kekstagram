@@ -97,9 +97,11 @@
    * @type {HTMLFormElement}
    */
   var filterForm = document.forms['upload-filter'];
-  var filterinput = filterForm.querySelectorAll('input');
+  var filterCookie = docCookies.getItem('upload-filter');
+  var filterFormControls = filterForm.querySelector('.upload-filter-controls');
+  var filterinput = filterFormControls.querySelectorAll('input');
   for (var i = 0; i < filterinput.length; i++ ) {
-    if (filterinput[i].id === docCookies.getItem('upload-filter') ) {
+    if (filterinput[i].id === filterCookie ) {
       filterinput[i].checked = 'checked';
     }
   }
@@ -249,8 +251,10 @@
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
 
-    var dateToExpire = +Date.now() + 228 * 24 * 60 * 60 * 100;
+    var dateToExpire = Number(Date.now()) + 228 * 24 * 60 * 60 * 100;
     var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+    //docCookies.setItem('upload-filter=' + filterMap.className + ';expires=' + formattedDateToExpire);
+    //docCookies.setItem('filter-image-preview=' + filterImage.className + ';expires=' + formattedDateToExpire);
     document.cookie = 'filter-image-preview=' + filterImage.className + ';expires=' + formattedDateToExpire;
     document.cookie = 'upload-filter=' + filterMap.className + ';expires=' + formattedDateToExpire;
   };
