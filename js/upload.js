@@ -7,6 +7,7 @@
 
 'use strict';
 /*global docCookies*/
+//
 (function() {
   /** @enum {string} */
   var FileType = {
