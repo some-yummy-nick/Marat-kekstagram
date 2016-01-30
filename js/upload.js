@@ -253,10 +253,8 @@
 
     var dateToExpire = Number(Date.now()) + 228 * 24 * 60 * 60 * 100;
     var formattedDateToExpire = new Date(dateToExpire).toUTCString();
-    //docCookies.setItem('upload-filter=' + filterMap.className + ';expires=' + formattedDateToExpire);
-    //docCookies.setItem('filter-image-preview=' + filterImage.className + ';expires=' + formattedDateToExpire);
-    document.cookie = 'filter-image-preview=' + filterImage.className + ';expires=' + formattedDateToExpire;
-    document.cookie = 'upload-filter=' + filterMap.className + ';expires=' + formattedDateToExpire;
+    docCookies.setItem('upload-filter', filterMap.className, formattedDateToExpire);
+    docCookies.setItem('filter-image-preview', filterImage.className, formattedDateToExpire);
   };
 
   /**
