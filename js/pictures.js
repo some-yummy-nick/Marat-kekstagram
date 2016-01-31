@@ -12,10 +12,11 @@
 
   function getElementFromTemplate( data ) {
     var template = doc.querySelector('#picture-template');
+    var element;
     if ('content' in template ) {
-      var element = template.content.children[0].cloneNode(true);
+      element = template.content.childNodes[1].cloneNode(true);
     } else {
-      var element = template.children[0].cloneNode(true);
+      element = template.childNodes[1].cloneNode(true);
     }
     element.querySelector('.picture-comments').textContent = data.comments;
     element.querySelector('.picture-likes').textContent = data.likes;
