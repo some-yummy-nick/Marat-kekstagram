@@ -160,8 +160,6 @@
   aboveForm.min = 0;
   leftForm.min = 0;
   sideForm.min = 1;
-
-
   uploadForm.onchange = function(evt) {
     var element = evt.target;
     if (element.id === 'upload-file') {
