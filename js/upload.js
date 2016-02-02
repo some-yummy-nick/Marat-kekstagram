@@ -220,6 +220,10 @@
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
+      submitButton.removeAttribute('disabled');
+    }
+    else {
+      submitButton.setAttribute('disabled', '');
     }
   };
   /**
@@ -251,7 +255,6 @@
     var formattedDateToExpire = new Date(dateToExpire).toUTCString();
     docCookies.setItem('upload-filter', filterMap.className, formattedDateToExpire);
     docCookies.setItem('filter-image-preview', filterImage.className, formattedDateToExpire);
-    submitButton.disabled = !resizeFormIsValid();
   };
 
   /**
