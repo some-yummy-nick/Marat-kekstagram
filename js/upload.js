@@ -221,8 +221,7 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
       submitButton.removeAttribute('disabled');
-    }
-    else {
+    } else {
       submitButton.setAttribute('disabled', '');
     }
   };
