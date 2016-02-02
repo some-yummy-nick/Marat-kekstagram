@@ -51,7 +51,6 @@
       currentResizer = null;
     }
   }
-
   /**
    * Ставит одну из трех случайных картинок на фон формы загрузки.
    */
@@ -73,12 +72,13 @@
    */
   function resizeFormIsValid() {
     if (currentResizer) {
-      if ((Number(sideForm.value) + Number(leftForm.value) <= currentResizer._image.naturalWidth) && (Number(sideForm.value) + Number(aboveForm.value) <= currentResizer._image.naturalHeight )) {
+      if ((Number(sideForm.value) + Number(leftForm.value) <= currentResizer._image.naturalWidth) && (Number(sideForm.value) + Number(aboveForm.value) <= currentResizer._image.naturalHeight ) && Number(sideForm.value) !== 0 && Number(leftForm.value) !== 0 && Number(aboveForm.value) !== 0 ) {
         return true;
       }
     }
     return false;
   }
+
 
   /**
    * Форма загрузки изображения.
@@ -91,6 +91,8 @@
    * @type {HTMLFormElement}
    */
   var resizeForm = document.forms['upload-resize'];
+  var submitButton = resizeForm['resize-fwd'];
+
 
   /**
    * Форма добавления фильтра.
@@ -155,12 +157,10 @@
   var aboveForm = resizeForm['resize-y'];
   var sideForm = resizeForm['resize-size'];
 
-  aboveForm.min = 1;
-  leftForm.min = 1;
+  aboveForm.min = 0;
+  leftForm.min = 0;
   sideForm.min = 1;
-  leftForm.value = 40;
-  aboveForm.value = 40;
-  sideForm.value = 400;
+
 
   uploadForm.onchange = function(evt) {
     var element = evt.target;
@@ -191,7 +191,6 @@
         showMessage(Action.ERROR);
       }
     }
-
   };
 
   /**
@@ -225,7 +224,6 @@
       filterForm.classList.remove('invisible');
     }
   };
-
   /**
    * Сброс формы фильтра. Показывает форму кадрирования.
    * @param {Event} evt
@@ -255,6 +253,7 @@
     var formattedDateToExpire = new Date(dateToExpire).toUTCString();
     docCookies.setItem('upload-filter', filterMap.className, formattedDateToExpire);
     docCookies.setItem('filter-image-preview', filterImage.className, formattedDateToExpire);
+    submitButton.disabled = !resizeFormIsValid();
   };
 
   /**
