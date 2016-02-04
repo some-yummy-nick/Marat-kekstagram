@@ -8,7 +8,7 @@
     var element = getElementFromTemplate(picture);
     container.appendChild(element);
   });
-
+  filters.classList.remove('hidden');
   function getElementFromTemplate( data ) {
     var template = doc.querySelector('#picture-template');
     var element;
@@ -22,7 +22,6 @@
     var backgroundImage = new Image();
     var imageLoadTimeout;
     backgroundImage.onload = function() {
-      filters.classList.remove('hidden');
       clearTimeout(imageLoadTimeout);
       var elementImage = element.querySelector('img');
       element.replaceChild(backgroundImage, elementImage);
