@@ -4,7 +4,6 @@
   var doc = document;
   var container = doc.querySelector('.pictures');
   var filters = doc.querySelector('.filters');
-  filters.classList.remove('hidden');
   pictures.forEach(function( picture ) {
     var element = getElementFromTemplate(picture);
     container.appendChild(element);
@@ -23,6 +22,7 @@
     var backgroundImage = new Image();
     var imageLoadTimeout;
     backgroundImage.onload = function() {
+      filters.classList.remove('hidden');
       clearTimeout(imageLoadTimeout);
       var elementImage = element.querySelector('img');
       element.replaceChild(backgroundImage, elementImage);
