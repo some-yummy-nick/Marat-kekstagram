@@ -70,14 +70,14 @@
     element.querySelector('.picture-likes').textContent = data.likes;
     var backgroundImage = new Image();
     var imageLoadTimeout;
-    var Pictures = doc.querySelector('.pictures');
-    Pictures.classList.add('pictures-loading');
+    var image = doc.querySelector('.pictures');
+    image.classList.add('pictures-loading');
     backgroundImage.onload = function() {
       clearTimeout(imageLoadTimeout);
       var elementImage = element.querySelector('img');
       element.replaceChild(backgroundImage, elementImage);
       backgroundImage.width = 182;
-      Pictures.classList.remove('pictures-loading');
+      image.classList.remove('pictures-loading');
     };
     backgroundImage.onerror = function() {
       element.classList.add('picture-load-failure');
