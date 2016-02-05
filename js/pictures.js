@@ -22,6 +22,13 @@
     });
     container.appendChild(fragment);
   }
+  var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
+  function filterByDate(obj) {
+    var arrDate = obj.date;
+    if (Number(new Date(arrDate)) < week2) {
+      return true;
+    }
+  }
   filters.classList.remove('hidden');
   function setActiveFilter( id ) {
     if ( activeFilter === id ) {
@@ -32,7 +39,8 @@
     var filteredPictures = pictures.slice(0);
     switch (id) {
       case 'filter-new':
-        filteredPictures = filteredPictures.sort(function( a, b ) {
+        var ourWeek = filteredPictures.filter(filterByDate);
+        filteredPictures = ourWeek.sort(function( a, b ) {
           return b.date - a.date;
         });
         activeFilter = 'filter-new';
