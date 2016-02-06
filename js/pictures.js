@@ -55,14 +55,26 @@
     renderPictures(filteredPictures);
   }
   function getPictures() {
+    container.classList.add('pictures-loading');
+    var imageLoadTimeout;
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
+    xhr.open('GET', 'https://o0.github.io/assets/json/pictures.json');
     xhr.onload = function(evt) {
+      clearTimeout(imageLoadTimeout);
+      container.classList.remove('pictures-loading');
       var rawData = evt.target.response;
       var loadedPictures = JSON.parse(rawData);
       pictures = loadedPictures;
       renderPictures(loadedPictures);
     };
+    xhr.onerror = function() {
+      container.classList.add('pictures-failure');
+    };
+    var IMAGE_TIMEOUT = 10000;
+    imageLoadTimeout = setTimeout(function() {
+      pictures = '';
+      container.classList.add('pictures-failure');
+    }, IMAGE_TIMEOUT);
     xhr.send();
   }
 
@@ -78,13 +90,12 @@
     element.querySelector('.picture-likes').textContent = data.likes;
     var backgroundImage = new Image();
     var imageLoadTimeout;
-    var image = doc.querySelector('.pictures');
-    image.classList.add('pictures-loading');
     backgroundImage.onload = function() {
       clearTimeout(imageLoadTimeout);
       var elementImage = element.querySelector('img');
       element.replaceChild(backgroundImage, elementImage);
       backgroundImage.width = 182;
+      var image = doc.querySelector('.pictures');
       image.classList.remove('pictures-loading');
     };
     backgroundImage.onerror = function() {
