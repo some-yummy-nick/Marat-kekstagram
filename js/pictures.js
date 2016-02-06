@@ -95,8 +95,6 @@
       var elementImage = element.querySelector('img');
       element.replaceChild(backgroundImage, elementImage);
       backgroundImage.width = 182;
-      var image = doc.querySelector('.pictures');
-      image.classList.remove('pictures-loading');
     };
     backgroundImage.onerror = function() {
       element.classList.add('picture-load-failure');
