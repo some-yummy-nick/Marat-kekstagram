@@ -4,19 +4,40 @@
   var container = doc.querySelector('.pictures');
   var activeFilter = 'filter-popular';
   var pictures = [];
+  var filteredPictures = [];
+  var currentPage = 0;
+  var PAGE_SIZE = 12;
   var filters = doc.querySelector('.filters');
-  var filtersRadio = filters.querySelectorAll('.filters-radio');
-  for ( var i = 0; i < filtersRadio.length; i++) {
-    filtersRadio[i].onclick = function(evt) {
-      var clickedElementID = evt.target.id;
-      setActiveFilter(clickedElementID);
-    };
-  }
+  filters.addEventListener('click', function(evt) {
+    var clickedElement = evt.target;
+
+    if (clickedElement.classList.contains('filters-radio')) {
+      setActiveFilter(clickedElement.id);
+    }
+  });
+  var scrollTimeout;
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      var containerCoordinates = container.getBoundingClientRect();
+      var viewportSize = window.innerHeight;
+      if (containerCoordinates.top <= viewportSize ) {
+        if (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)) {
+          renderPictures(filteredPictures, ++currentPage);
+        }
+      }
+    }, 100);
+  });
   getPictures();
-  function renderPictures(picturesToRender) {
-    container.innerHTML = '';
+  function renderPictures(picturesToRender, pageNumber, replace) {
+    if (replace) {
+      container.innerHTML = '';
+    }
     var fragment = doc.createDocumentFragment();
-    picturesToRender.forEach(function( picture ) {
+    var from = pageNumber * PAGE_SIZE;
+    var to = from + PAGE_SIZE;
+    var pagePictures = picturesToRender.slice(from, to);
+    pagePictures.forEach(function( picture ) {
       var element = getElementFromTemplate(picture);
       fragment.appendChild(element);
     });
@@ -36,7 +57,7 @@
     }
     doc.querySelector('#' + activeFilter).removeAttribute('checked', '');
     doc.querySelector('#' + id).setAttribute('checked', '');
-    var filteredPictures = pictures.slice(0);
+    filteredPictures = pictures.slice(0);
     switch (id) {
       case 'filter-new':
         var ourWeek = filteredPictures.filter(filterByDate);
@@ -44,6 +65,7 @@
           return b.date - a.date;
         });
         activeFilter = 'filter-new';
+        console.log(filteredPictures);
         break;
       case 'filter-discussed':
         filteredPictures = filteredPictures.sort(function( a, b ) {
@@ -52,7 +74,8 @@
         activeFilter = 'filter-discussed';
         break;
     }
-    renderPictures(filteredPictures);
+    currentPage = 0;
+    renderPictures(filteredPictures, currentPage, true);
   }
   function getPictures() {
     container.classList.add('pictures-loading');
