@@ -28,6 +28,14 @@
       }
     }, 100);
   });
+  var largeScreenSize = 1367;
+  var windowLarge = function() {
+    if (document.body.clientWidth > largeScreenSize) {
+      if (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)) {
+        renderPictures(filteredPictures, ++currentPage);
+      }
+    }
+  };
   getPictures();
   function renderPictures(picturesToRender, pageNumber, replace) {
     if (replace) {
@@ -65,7 +73,6 @@
           return b.date - a.date;
         });
         activeFilter = 'filter-new';
-        console.log(filteredPictures);
         break;
       case 'filter-discussed':
         filteredPictures = filteredPictures.sort(function( a, b ) {
@@ -76,6 +83,7 @@
     }
     currentPage = 0;
     renderPictures(filteredPictures, currentPage, true);
+    windowLarge();
   }
   function getPictures() {
     container.classList.add('pictures-loading');
@@ -88,7 +96,24 @@
       var rawData = evt.target.response;
       var loadedPictures = JSON.parse(rawData);
       pictures = loadedPictures;
-      renderPictures(loadedPictures);
+      renderPictures(loadedPictures, currentPage);
+      window.addEventListener('scroll', function() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+          var containerCoordinates = container.getBoundingClientRect();
+          var viewportSize = window.innerHeight;
+          if (containerCoordinates.top <= viewportSize ) {
+            if (currentPage < Math.ceil(loadedPictures.length / PAGE_SIZE)) {
+              renderPictures(loadedPictures, ++currentPage);
+            }
+          }
+        }, 100);
+      });
+      if (document.body.clientWidth > largeScreenSize) {
+        if (currentPage < Math.ceil(loadedPictures.length / PAGE_SIZE)) {
+          renderPictures(loadedPictures, ++currentPage);
+        }
+      }
     };
     xhr.onerror = function() {
       container.classList.add('pictures-failure');
