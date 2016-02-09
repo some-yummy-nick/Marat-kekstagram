@@ -28,9 +28,9 @@
       }
     }, 100);
   });
-  var largeScreenSize = 1367;
+  var LARGE_SCREEN_SIZE = 1367;
   var windowLarge = function() {
-    if (document.body.clientWidth > largeScreenSize) {
+    if (document.body.clientWidth > LARGE_SCREEN_SIZE) {
       if (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)) {
         renderPictures(filteredPictures, ++currentPage);
       }
@@ -109,7 +109,7 @@
           }
         }, 100);
       });
-      if (document.body.clientWidth > largeScreenSize) {
+      if (document.body.clientWidth > LARGE_SCREEN_SIZE) {
         if (currentPage < Math.ceil(loadedPictures.length / PAGE_SIZE)) {
           renderPictures(loadedPictures, ++currentPage);
         }
