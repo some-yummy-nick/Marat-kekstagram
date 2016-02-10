@@ -80,6 +80,16 @@
     return false;
   }
 
+  function valueForm() {
+    var change = document.createEvent('CustomEvent');
+    change.initCustomEvent('resizerchange', false, false, {});
+    window.addEventListener('resizerchange', function() {
+      leftForm.value = currentResizer.getConstraint().x;
+      aboveForm.value = currentResizer.getConstraint().y;
+      sideForm.value = currentResizer.getConstraint().side;
+    });
+    window.dispatchEvent(change);
+  }
 
   /**
    * Форма загрузки изображения.
@@ -161,12 +171,8 @@
   aboveForm.min = 0;
   leftForm.min = 0;
   sideForm.min = 1;
-  sideForm.value = 2;
-  leftForm.value = 1;
-  aboveForm.value = 1;
   resizeForm.addEventListener('change', function() {
     currentResizer.setConstraint(+leftForm.value, +aboveForm.value, +sideForm.value);
-    currentResizer.moveConstraint(+leftForm.value, +aboveForm.value, +sideForm.value);
   });
   uploadForm.addEventListener('change', function(evt) {
     var element = evt.target;
@@ -183,16 +189,12 @@
 
           currentResizer = new Resizer(fileReader.result);
           currentResizer.setElement(resizeForm);
-          uploadMessage.classList.add('invisible');
 
+          valueForm();
+          uploadMessage.classList.add('invisible');
           uploadForm.classList.add('invisible');
           resizeForm.classList.remove('invisible');
           hideMessage();
-          var resizerchange = new CustomEvent('resizerchange');
-          window.addEventListener('resizerchange', function() {
-            console.log(currentResizer.getConstraint());
-          });
-          window.dispatchEvent(resizerchange);
         });
 
         fileReader.readAsDataURL(element.files[0]);

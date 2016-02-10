@@ -94,26 +94,10 @@
       clearTimeout(imageLoadTimeout);
       container.classList.remove('pictures-loading');
       var rawData = evt.target.response;
-      var loadedPictures = JSON.parse(rawData);
-      pictures = loadedPictures;
-      renderPictures(loadedPictures, currentPage);
-      window.addEventListener('scroll', function() {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(function() {
-          var containerCoordinates = container.getBoundingClientRect();
-          var viewportSize = window.innerHeight;
-          if (containerCoordinates.top <= viewportSize ) {
-            if (currentPage < Math.ceil(loadedPictures.length / PAGE_SIZE)) {
-              renderPictures(loadedPictures, ++currentPage);
-            }
-          }
-        }, 100);
-      });
-      if (document.body.clientWidth > LARGE_SCREEN_SIZE) {
-        if (currentPage < Math.ceil(loadedPictures.length / PAGE_SIZE)) {
-          renderPictures(loadedPictures, ++currentPage);
-        }
-      }
+      pictures = JSON.parse(rawData);
+      filteredPictures = pictures.slice(0);
+      renderPictures(filteredPictures, currentPage);
+      windowLarge();
     };
     xhr.onerror = function() {
       container.classList.add('pictures-failure');
@@ -125,7 +109,6 @@
     }, IMAGE_TIMEOUT);
     xhr.send();
   }
-
   function getElementFromTemplate( data ) {
     var template = doc.querySelector('#picture-template');
     var element;
