@@ -91,6 +91,7 @@
     window.dispatchEvent(change);
   }
 
+  //Установка значений смещения на форму
   /**
    * Форма загрузки изображения.
    * @type {HTMLFormElement}
@@ -190,11 +191,11 @@
           currentResizer = new Resizer(fileReader.result);
           currentResizer.setElement(resizeForm);
 
-          valueForm();
           uploadMessage.classList.add('invisible');
           uploadForm.classList.add('invisible');
           resizeForm.classList.remove('invisible');
           hideMessage();
+          setTimeout(valueForm, 1);
         });
 
         fileReader.readAsDataURL(element.files[0]);
