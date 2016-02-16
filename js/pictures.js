@@ -64,12 +64,6 @@
     gallery.show();
   }
   var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
-  function filterByDate(obj) {
-    var arrDate = obj.date;
-    if (Number(new Date(arrDate)) < week2) {
-      return true;
-    }
-  }
   filters.classList.remove('hidden');
   function setActiveFilter( id ) {
     if ( activeFilter === id ) {
@@ -79,18 +73,20 @@
     doc.querySelector('#' + id).setAttribute('checked', '');
     filteredPictures = pictures.slice(0);
     switch (id) {
-      case 'filter-new':
-        var ourWeek = filteredPictures.filter(filterByDate);
-        filteredPictures = ourWeek.sort(function( a, b ) {
-          return b.date - a.date;
-        });
-        activeFilter = 'filter-new';
-        break;
       case 'filter-discussed':
         filteredPictures = filteredPictures.sort(function( a, b ) {
           return b.comments - a.comments;
         });
         activeFilter = 'filter-discussed';
+        break;
+      case 'filter-new':
+        filteredPictures = filteredPictures.sort(function(a, b) {
+          return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+        });
+        filteredPictures = filteredPictures.filter(function(picture) {
+          return new Date(picture.date).valueOf() < week2;
+        });
+        activeFilter = 'filter-new';
         break;
     }
     currentPage = 0;
