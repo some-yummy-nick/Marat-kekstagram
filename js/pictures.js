@@ -84,7 +84,7 @@
           return new Date(b.date).valueOf() - new Date(a.date).valueOf();
         });
         filteredPictures = filteredPictures.filter(function(picture) {
-          return new Date(picture.date).valueOf() < week2;
+          return new Date(picture.date).valueOf() >= week2;
         });
         activeFilter = 'filter-new';
         break;
