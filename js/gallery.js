@@ -8,13 +8,13 @@
   };
   Gallery.prototype.show = function() {
     this.element.classList.remove('invisible');
-    this._closeButton.addEventListener('click', this._onDocumentKeyDown);
     this._closeButton.addEventListener('click', this._onPhotoClick);
+    window.addEventListener( 'keydown', this._onDocumentKeyDown );
   };
   Gallery.prototype.hide = function() {
     this.element.classList.add('invisible');
-    this._closeButton.removeEventListener('click', this._onDocumentKeyDown);
     this._closeButton.removeEventListener('click', this._onPhotoClick);
+    window.removeEventListener( 'keydown', this._onDocumentKeyDown );
   };
   Gallery.prototype._onDocumentKeyDown = function(evt) {
     if (evt.keyCode === 27) {
