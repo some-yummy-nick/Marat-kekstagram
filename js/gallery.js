@@ -16,8 +16,10 @@
     this._closeButton.removeEventListener('click', this._onDocumentKeyDown);
     this._closeButton.removeEventListener('click', this._onPhotoClick);
   };
-  Gallery.prototype._onDocumentKeyDown = function() {
-    this.hide();
+  Gallery.prototype._onDocumentKeyDown = function(evt) {
+    if (evt.keyCode === 27) {
+      this.hide();
+    }
   };
   Gallery.prototype._onPhotoClick = function() {
   };
