@@ -3,7 +3,8 @@
 ( function() {
   var doc = document;
   var container = doc.querySelector('.pictures');
-  var activeFilter = 'filter-popular';
+  var defaultFilter = 'filter-popular';
+  var activeFilter = {};
   var pictures = [];
   var filteredPictures = [];
   var gallery = new Gallery();
@@ -65,12 +66,20 @@
   }
   var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
   filters.classList.remove('hidden');
-  function setActiveFilter( id ) {
-    if ( activeFilter === id ) {
+  function setActiveFilter(id) {
+    if ( activeFilter === id) {
       return;
+    } else if (activeFilter === '') {
+      activeFilter = defaultFilter;
     }
-    doc.querySelector('#' + activeFilter).removeAttribute('checked', '');
-    doc.querySelector('#' + id).setAttribute('checked', '');
+
+    activeFilter = id;
+    currentPage = 0;
+    var selectedFilter = document.querySelector('#' + activeFilter);
+    if (selectedFilter) {
+      selectedFilter.setAttribute('checked', 'false');
+    }
+    document.querySelector('#' + id).setAttribute('checked', 'true');
     filteredPictures = pictures.slice(0);
     switch (id) {
       case 'filter-discussed':
