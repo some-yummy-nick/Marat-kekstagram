@@ -3,8 +3,7 @@
 ( function() {
   var doc = document;
   var container = doc.querySelector('.pictures');
-  var defaultFilter = 'filter-popular';
-  var activeFilter = {};
+  var activeFilter = 'filter-popular';
   var pictures = [];
   var filteredPictures = [];
   var gallery = new Gallery();
