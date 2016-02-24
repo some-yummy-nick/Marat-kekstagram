@@ -69,12 +69,8 @@
   function setActiveFilter(id) {
     if ( activeFilter === id) {
       return;
-    } else if (activeFilter === '') {
-      activeFilter = defaultFilter;
     }
-
     activeFilter = id;
-    currentPage = 0;
     var selectedFilter = document.querySelector('#' + activeFilter);
     if (selectedFilter) {
       selectedFilter.setAttribute('checked', 'false');
