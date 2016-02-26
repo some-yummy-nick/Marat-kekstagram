@@ -65,12 +65,16 @@
   }
   var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
   filters.classList.remove('hidden');
-  function setActiveFilter( id ) {
-    if ( activeFilter === id ) {
+  function setActiveFilter(id) {
+    if ( activeFilter === id) {
       return;
     }
-    doc.querySelector('#' + activeFilter).removeAttribute('checked', '');
-    doc.querySelector('#' + id).setAttribute('checked', '');
+    activeFilter = id;
+    var selectedFilter = document.querySelector('#' + activeFilter);
+    if (selectedFilter) {
+      selectedFilter.setAttribute('checked', 'false');
+    }
+    document.querySelector('#' + id).setAttribute('checked', 'true');
     filteredPictures = pictures.slice(0);
     switch (id) {
       case 'filter-discussed':
