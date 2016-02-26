@@ -1,4 +1,9 @@
 define(function() {
+ /**
+  * @param {*} a - параметр для анализа
+  * @param {*} b - параметр для анализа
+  * @returns {number} - сумма произведений a и b
+  */
   var multyplyArrays = function (a, b) {
     "use strict";
     var result = 0;
@@ -10,7 +15,10 @@ define(function() {
     return result;
   };
 
-
+  /**
+   * @param {*} a - параметр для анализа
+   * @returns {number} - сумма
+   */
 var sum = function (a) {
     var result = 0;
     for (var i = 0; i < a.length; i++) {
@@ -19,7 +27,11 @@ var sum = function (a) {
 
     return result;
 };
-
+  /**
+   * @param {*} a - параметр для анализа
+   * @param {*} b - параметр для анализа
+   * @returns {string} - сообщение
+   */
 var getMessage = function (a, b) { // функция для подсчета статистики по разным типам изображений
     if (typeof (a) == 'boolean') {
         if (a == true) {
