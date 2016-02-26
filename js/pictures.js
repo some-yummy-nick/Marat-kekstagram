@@ -116,6 +116,7 @@
       var rawData = evt.target.response;
       pictures = JSON.parse(rawData);
       filteredPictures = pictures.slice(0);
+      gallery.setPictures(filteredPictures);
       renderPictures(filteredPictures, currentPage);
       windowLarge();
     });
