@@ -1,14 +1,13 @@
-/* global Resizer: true */
-
 /**
  * @fileoverview
  * @author Igor Alexeenko (o0)
  */
 
 'use strict';
-/*global docCookies*/
 
-(function() {
+define([
+  'resizer'
+], function(Resizer) {
   /** @enum {string} */
   var FileType = {
     'GIF': '',
@@ -111,7 +110,7 @@
    * @type {HTMLFormElement}
    */
   var filterForm = document.forms['upload-filter'];
-  var filterCookie = docCookies.getItem('upload-filter');
+  var filterCookie = window.docCookies.getItem('upload-filter');
   var filterFormControls = filterForm.querySelector('.upload-filter-controls');
   var filterinput = filterFormControls.querySelectorAll('input');
   for (var i = 0; i < filterinput.length; i++ ) {
@@ -123,7 +122,7 @@
    * @type {HTMLImageElement}
    */
   var filterImage = filterForm.querySelector('.filter-image-preview');
-  filterImage.className = docCookies.getItem('filter-image-preview');
+  filterImage.className = window.docCookies.getItem('filter-image-preview');
   /**
    * @type {HTMLElement}
    */
@@ -268,8 +267,8 @@
 
     var dateToExpire = Number(Date.now()) + 228 * 24 * 60 * 60 * 100;
     var formattedDateToExpire = new Date(dateToExpire).toUTCString();
-    docCookies.setItem('upload-filter', filterMap.className, formattedDateToExpire);
-    docCookies.setItem('filter-image-preview', filterImage.className, formattedDateToExpire);
+    window.docCookies.setItem('upload-filter', filterMap.className, formattedDateToExpire);
+    window.docCookies.setItem('filter-image-preview', filterImage.className, formattedDateToExpire);
   });
 
   /**
@@ -301,4 +300,4 @@
 
   cleanupResizer();
   updateBackground();
-})();
+});

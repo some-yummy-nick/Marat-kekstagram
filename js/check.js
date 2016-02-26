@@ -1,13 +1,15 @@
-var multyplyArrays = function (a, b) {
+define(function() {
+  var multyplyArrays = function (a, b) {
     "use strict";
     var result = 0;
 
     for (var i = 0, l = a.length; i < l; i++) {
-        result += a[i] * b[i];
+      result += a[i] * b[i];
     }
 
     return result;
-}
+  };
+
 
 var sum = function (a) {
     var result = 0;
@@ -16,7 +18,7 @@ var sum = function (a) {
     }
 
     return result;
-}
+};
 
 var getMessage = function (a, b) { // функция для подсчета статистики по разным типам изображений
     if (typeof (a) == 'boolean') {
@@ -34,4 +36,5 @@ var getMessage = function (a, b) { // функция для подсчета с�
             return "Количество красных точек во всех строчках изображения: " + sum(a);
         }
     }
-}
+};
+});

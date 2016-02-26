@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+define(function() {
   function PhotoBase() {}
   PhotoBase.prototype._data = null;
   PhotoBase.prototype.render = function() {};
@@ -17,6 +17,6 @@
 
   PhotoBase.prototype.onClick = null;
 
-  window.PhotoBase = PhotoBase;
-})();
+  return PhotoBase;
+});
 
