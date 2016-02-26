@@ -1,7 +1,9 @@
-/* global inherit: true, PhotoBase: true */
 'use strict';
 
-(function() {
+define([
+  'inherit',
+  'PhotoBase'
+], function(inherit, PhotoBase) {
   function PhotoPreview() {}
   inherit(PhotoPreview, PhotoBase);
-})();
+});
