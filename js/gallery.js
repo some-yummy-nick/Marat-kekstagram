@@ -66,20 +66,6 @@
     this.setNextPictureIndex();
     this.setCurrentPicture(this.currentPicture);
   };
-  Gallery.prototype._onDocumentKeyDown = function(evt) {
-    evt.preventDefault();
-    if (evt.keyCode === 27) {
-      this.hide();
-    }
-    if (evt.keyCode === 39) {
-      evt.preventDefault();
-      this.setCurrentPhoto(this._currentImage + 1);
-    }
-    if (evt.keyCode === 37) {
-      evt.preventDefault();
-      this.setCurrentPhoto(this._currentImage - 1);
-    }
-  };
   Gallery.prototype.setData = function(data) {
     this._data = data;
     this.currentPicture = this.getNumberPicture(data.url);
