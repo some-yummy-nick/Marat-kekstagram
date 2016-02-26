@@ -3,10 +3,19 @@ define([
   'inherit',
   'PhotoBase'
 ], function(inherit, PhotoBase) {
+  /**
+   * Конструктор фотографии в общем списке
+   * @constructor
+   */
   function Photo() {
     this.onPhotoClick = this.onPhotoClick.bind(this);
   }
   inherit(Photo, PhotoBase);
+  /**
+   * Отображение DOM-элемента по шаблону для фотографии в списке
+   * @method
+   * @override
+   */
   Photo.prototype.render = function() {
     var template = document.querySelector('#picture-template');
     if ('content' in template ) {
@@ -37,6 +46,13 @@ define([
 
     this.element.addEventListener('click', this.onPhotoClick);
   };
+  /**
+   * Обработчик клика по фотографии в общем списке фотографий
+   * @method
+   * @listens click
+   * @param evt
+   * @override
+   */
   Photo.prototype.onPhotoClick = function(evt) {
     evt.preventDefault();
     if (
@@ -48,6 +64,11 @@ define([
       }
     }
   };
+  /**
+   * Метод удаления обработчиков событий с DOM-элемента фотографии и удаления элемента из DOM-дерева
+   * @method
+   * @override
+   */
   Photo.prototype.remove = function() {
     this.element.addEventListener('click', this.onPhotoClick);
   };

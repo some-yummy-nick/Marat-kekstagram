@@ -1,23 +1,93 @@
 'use strict';
 define(function() {
+  /**
+   * Конструктор галереи
+   * @constructor
+   */
   var Gallery = function() {
+    /**
+     * Галерея на странице
+     * @type {HTMLElement}
+     */
     this.element = document.querySelector('.gallery-overlay');
+    /**
+     * Крест для закрытия галереи
+     * @type {HTMLElement}
+     */
     this.closeButton = this.element.querySelector('.gallery-overlay-close');
+    /**
+     * Контейнер для фотографии
+     * @type {HTMLElement}
+     */
     this.photo = document.querySelector('.gallery-overlay-image');
+    /**
+     * Контейнер для лайков
+     * @type {HTMLElement}
+     */
     this.likes = document.querySelector('.gallery-overlay-controls-like');
+    /**
+     * Количество лайков
+     * @type {HTMLElement}
+     */
     this.likesCount = document.querySelector('.likes-count');
+    /**
+     * Контейнер для комментариев
+     * @type {HTMLElement}
+     */
     this.comments = document.querySelector('.gallery-overlay-controls-comments');
+    /**
+     * список фотографий из json
+     * @type {Array}
+     */
     this.pictures = [];
+    /**
+     * Текущая фотография
+     * @type {number}
+     */
     this.currentPicture = 0;
+    /**
+     * Подписка на событие нажатия на крестик для загрытия галереи
+     * @type {function(this:Gallery)}
+     * @private
+     */
     this._onCloseClick = this._onCloseClick.bind(this);
+    /**
+     * Подписка на событие нажатия клавиши на клавиатуре
+     * @type {function(this:Gallery)}
+     * @private
+     */
     this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
+    /**
+     * Подписка на событие клика по фотографии
+     * @type {function(this:Gallery)}
+     * @private
+     */
     this._onPhotoClick = this._onPhotoClick.bind(this);
+    /**
+     * Подписка на событие лайка фотографии
+     * @type {function(this:Gallery)}
+     * @private
+     */
     this._onSetLike = this._onSetLike.bind(this);
   };
+  /** @enum {number} */
+  var KEYCODE = {
+    'ESC': 27,
+    'LEFT': 37,
+    'RIGHT': 39
+  };
+  /**
+   * Вызывающий метод для отображения галереи
+   * @method
+   */
   Gallery.prototype.render = function() {
     this.show();
     this.setCurrentPicture(this.currentPicture);
   };
+  /**
+   * Основной метод для отображения галереи
+   * @method
+   */
   Gallery.prototype.show = function() {
     this.element.classList.remove('invisible');
     this.closeButton.addEventListener('click', this._onCloseClick);
@@ -25,6 +95,10 @@ define(function() {
     this.likes.addEventListener('click', this._onSetLike);
     window.addEventListener('keydown', this._onDocumentKeyDown);
   };
+  /**
+   * Основной метод закрытия галереи
+   * @method
+   */
   Gallery.prototype.hide = function() {
     this.element.classList.add('invisible');
     this.closeButton.removeEventListener('click', this._onCloseClick);
@@ -32,22 +106,37 @@ define(function() {
     this.likes.removeEventListener('click', this._onSetLike);
     window.removeEventListener('keydown', this._onDocumentKeyDown);
   };
+  /**
+   * Метод события нажатия на клавишу клавиатуры
+   * @method
+   * @listens click
+   * @param {Event} evt - событие нажатия клавиши
+   * @private
+   */
   Gallery.prototype._onDocumentKeyDown = function(evt) {
-    if (evt.keyCode === 27) {
-      this.hide();
-    } else {
-      if (evt.keyCode === 39) {
-        this.setNextPictureIndex();
-      }
-      if (evt.keyCode === 37) {
-        this.setPrevPictureIndex();
-      }
-      this.setCurrentPicture(this.currentPicture);
+    switch (evt.keyCode) {
+      case KEYCODE.ESC: this.hide();
+        break;
+      case KEYCODE.LEFT: this.setPrevPictureIndex();
+        break;
+      case KEYCODE.RIGHT:this.setNextPictureIndex();
+        break;
     }
+    this.setCurrentPicture(this.currentPicture);
   };
+  /**
+   * Метод массива фотографий из json сохраняет в объекте
+   * @method
+   * @param {Photo[]} pictures - массив фотографий
+   */
   Gallery.prototype.setPictures = function(pictures) {
     this.pictures = pictures;
   };
+  /**
+   * Метод устанавливает фотографию, которую отображает галерея
+   * @method
+   * @param {number} i - индекс фотографии в массиве
+   */
   Gallery.prototype.setCurrentPicture = function(i) {
     this.photo.src = this.pictures[i].url;
     this.likes.querySelector('.likes-count').textContent = this.pictures[i].likes;
@@ -59,18 +148,40 @@ define(function() {
       this.likesCount.classList.remove('likes-count-liked');
     }
   };
+  /**
+   * Метод события нажатия крестика для закрытия фотогалерии
+   * @method
+   * @listens click
+   * @private
+   */
   Gallery.prototype._onCloseClick = function() {
     this.hide();
   };
+  /**
+   * Метод события нажатия на фотогалерею
+   * @method
+   * @listens click
+   * @private
+   */
   Gallery.prototype._onPhotoClick = function() {
     this.setNextPictureIndex();
     this.setCurrentPicture(this.currentPicture);
   };
+  /**
+   * Метод устанавливает объект-фотографию из JSON
+   * @method
+   * @param {object} data
+   */
   Gallery.prototype.setData = function(data) {
     this._data = data;
     this.currentPicture = this.getNumberPicture(data.url);
   };
-
+  /**
+   * Метод возвращает номер фотограции в массиве
+   * @method
+   * @param {string} url - имя фотографии
+   * @returns {number}
+   */
   Gallery.prototype.getNumberPicture = function(url) {
     for (var i = 0; i < this.pictures.length; i++) {
       if (url === this.pictures[i].url) {
@@ -79,17 +190,29 @@ define(function() {
       }
     }
   };
+  /**
+   * Метод устанавливает отображаемой следующюю фотографию
+   * @method
+   */
   Gallery.prototype.setNextPictureIndex = function() {
     if (this.pictures[this.currentPicture + 1]) {
       this.currentPicture++;
     }
   };
-
+  /**
+   * Метод устанавливает отображаемой предыдущую фотографию
+   * @method
+   */
   Gallery.prototype.setPrevPictureIndex = function() {
     if (this.pictures[this.currentPicture - 1]) {
       this.currentPicture--;
     }
   };
+  /**
+   * Метод лайка на фотографии
+   * @method
+   * @private
+   */
   Gallery.prototype._onSetLike = function() {
     var currentObject = this.pictures[this.currentPicture];
     if (currentObject.setLike !== true) {

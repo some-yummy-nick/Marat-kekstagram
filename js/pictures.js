@@ -3,16 +3,60 @@ define([
   'photo',
   'gallery'
 ], function(Photo, Gallery) {
+  /**
+   * document в переменой
+   * @type {Element}
+   */
   var doc = document;
+  /**
+   * Контейнер для всех загруженных фотографий
+   * @type {Element}
+   */
   var container = doc.querySelector('.pictures');
+  /**
+   * Активный фильтр
+   * @type {string}
+   */
   var activeFilter = 'filter-popular';
+  /**
+   * Массив объектов загруженных фотографий
+   * @type {Photo[]}
+   */
   var pictures = [];
+  /**
+   * Массив объектов загруженных фотографий
+   * @type {Photo[]}
+   */
   var filteredPictures = [];
+  /**
+   * Массив объектов загруженных фотографий
+   * @type {Photo[]}
+   */
   var renderedElements = [];
+  /**
+   * @type (Gallery)
+   */
   var gallery = new Gallery();
+  /**
+   * Текущая страница с фотографиями
+   * @type {number}
+   */
   var currentPage = 0;
+  /**
+   * @const
+   * @type {number}
+   */
   var PAGE_SIZE = 12;
+  var LARGE_SCREEN_SIZE = 1367;
+  /**
+   * Форма с фильтрами
+   * @type {Element}
+   */
   var filters = doc.querySelector('.filters');
+  /**
+   * Таймаут для строла
+   */
+  var scrollTimeout;
   function setFilter() {
     filters.addEventListener('click', function(evt) {
       var clickedElement = evt.target;
@@ -21,8 +65,9 @@ define([
       }
     });
   }
-
-  var scrollTimeout;
+  /**
+   * Событие скролла
+   */
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(function() {
@@ -35,7 +80,9 @@ define([
       }
     }, 100);
   });
-  var LARGE_SCREEN_SIZE = 1367;
+  /**
+   * Проверка на размер экрана
+   */
   var windowLarge = function() {
     if (document.body.clientWidth > LARGE_SCREEN_SIZE) {
       if (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)) {
@@ -45,6 +92,12 @@ define([
   };
   getPictures();
   setFilter();
+  /**
+   * Отрисовка картинок
+   * @param {Array.<Object>} picturesToRender
+   * @param {number} pageNumber - номер страницы отображения
+   * @param {boolean} replace - если истина, то удаляет все существующие DOM-элементы с фотографиями
+   */
   function renderPictures(picturesToRender, pageNumber, replace) {
     if (replace) {
       var el;
@@ -74,6 +127,10 @@ define([
   }
   var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
   filters.classList.remove('hidden');
+  /**
+   * Установка выбранного фильтра
+   * @param {string} id
+   */
   function setActiveFilter(id) {
     if ( activeFilter === id) {
       return;
@@ -107,6 +164,9 @@ define([
     renderPictures(filteredPictures, currentPage, true);
     windowLarge();
   }
+  /**
+   * Загрузка списка картинок
+   */
   function getPictures() {
     container.classList.add('pictures-loading');
     var imageLoadTimeout;
