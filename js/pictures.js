@@ -1,6 +1,8 @@
-/*global Gallery, Photo */
 'use strict';
-( function() {
+define([
+  'photo',
+  'gallery'
+], function(Photo, Gallery) {
   var doc = document;
   var container = doc.querySelector('.pictures');
   var activeFilter = 'filter-popular';
@@ -130,4 +132,4 @@
     }, IMAGE_TIMEOUT);
     xhr.send();
   }
-})();
+});

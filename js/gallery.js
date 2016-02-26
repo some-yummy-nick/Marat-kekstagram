@@ -1,5 +1,5 @@
 'use strict';
-(function() {
+define(function() {
   var Gallery = function() {
     this.element = document.querySelector('.gallery-overlay');
     this.closeButton = this.element.querySelector('.gallery-overlay-close');
@@ -105,5 +105,5 @@
     }
   };
 
-  window.Gallery = Gallery;
-})();
+  return Gallery;
+});

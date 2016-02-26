@@ -1,6 +1,8 @@
-/* global inherit: true, PhotoBase: true*/
 'use strict';
-(function() {
+define([
+  'inherit',
+  'PhotoBase'
+], function(inherit, PhotoBase) {
   function Photo() {
     this.onPhotoClick = this.onPhotoClick.bind(this);
   }
@@ -49,7 +51,7 @@
   Photo.prototype.remove = function() {
     this.element.addEventListener('click', this.onPhotoClick);
   };
-  window.Photo = Photo;
-})();
+  return Photo;
+});
 
 
