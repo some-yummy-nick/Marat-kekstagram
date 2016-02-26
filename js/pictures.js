@@ -1,4 +1,4 @@
-/*global Photo, Gallery*/
+/*global Gallery, Photo */
 'use strict';
 ( function() {
   var doc = document;
@@ -6,17 +6,20 @@
   var activeFilter = 'filter-popular';
   var pictures = [];
   var filteredPictures = [];
+  var renderedElements = [];
   var gallery = new Gallery();
   var currentPage = 0;
   var PAGE_SIZE = 12;
   var filters = doc.querySelector('.filters');
-  filters.addEventListener('click', function(evt) {
-    var clickedElement = evt.target;
+  function setFilter() {
+    filters.addEventListener('click', function(evt) {
+      var clickedElement = evt.target;
+      if (clickedElement.classList.contains('filters-radio')) {
+        setActiveFilter(clickedElement.id);
+      }
+    });
+  }
 
-    if (clickedElement.classList.contains('filters-radio')) {
-      setActiveFilter(clickedElement.id);
-    }
-  });
   var scrollTimeout;
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
@@ -39,29 +42,33 @@
     }
   };
   getPictures();
+  setFilter();
   function renderPictures(picturesToRender, pageNumber, replace) {
     if (replace) {
-      var renderedElements = doc.querySelectorAll('.picture');
-      [].forEach.call(renderedElements, function(el) {
-        el.removeEventListener('click', _onPhotoClick);
-        container.removeChild(el);
-      });
+      var el;
+      while ((el = renderedElements.shift())) {
+        container.removeChild(el.element);
+        el.onClick = null;
+        el.remove();
+      }
+
     }
-    var fragment = doc.createDocumentFragment();
+    var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
     var pagePictures = picturesToRender.slice(from, to);
-    pagePictures.forEach(function( photo ) {
-      var photoElement = new Photo(photo);
+    renderedElements = renderedElements.concat(pagePictures.map(function(picture) {
+      var photoElement = new Photo();
+      photoElement.setData(picture);
       photoElement.render();
-      fragment.appendChild(photoElement.element);
-      photoElement.element.addEventListener('click', _onPhotoClick);
-    });
+      container.appendChild(photoElement.element);
+      photoElement.onClick = function() {
+        gallery.setData(photoElement.getData());
+        gallery.render();
+      };
+      return photoElement;
+    }));
     container.appendChild(fragment);
-  }
-  function _onPhotoClick(evt) {
-    evt.preventDefault();
-    gallery.show();
   }
   var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
   filters.classList.remove('hidden');
@@ -70,6 +77,7 @@
       return;
     }
     activeFilter = id;
+    currentPage = 0;
     var selectedFilter = document.querySelector('#' + activeFilter);
     if (selectedFilter) {
       selectedFilter.setAttribute('checked', 'false');
@@ -93,7 +101,7 @@
         activeFilter = 'filter-new';
         break;
     }
-    currentPage = 0;
+    gallery.setPictures(filteredPictures);
     renderPictures(filteredPictures, currentPage, true);
     windowLarge();
   }
@@ -102,18 +110,19 @@
     var imageLoadTimeout;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://o0.github.io/assets/json/pictures.json');
-    xhr.onload = function(evt) {
+    xhr.addEventListener('load', function(evt) {
       clearTimeout(imageLoadTimeout);
       container.classList.remove('pictures-loading');
       var rawData = evt.target.response;
       pictures = JSON.parse(rawData);
       filteredPictures = pictures.slice(0);
+      gallery.setPictures(filteredPictures);
       renderPictures(filteredPictures, currentPage);
       windowLarge();
-    };
-    xhr.onerror = function() {
+    });
+    xhr.addEventListener('error', function() {
       container.classList.add('pictures-failure');
-    };
+    });
     var IMAGE_TIMEOUT = 10000;
     imageLoadTimeout = setTimeout(function() {
       pictures = '';
