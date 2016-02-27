@@ -129,12 +129,12 @@ define([
   /**
    * Установка выбранного фильтра
    * @param {string} id
+   * @param {boolean} force
    */
-  function setActiveFilter(id) {
-    if ( activeFilter === id) {
+  function setActiveFilter(id, force) {
+    if (activeFilter === id && !force) {
       return;
     }
-    activeFilter = id;
     currentPage = 0;
     var selectedFilter = document.querySelector('#' + activeFilter);
     if (selectedFilter) {
@@ -142,8 +142,8 @@ define([
     }
     document.querySelector('#' + id).setAttribute('checked', 'true');
     filteredPictures = pictures.slice(0);
-    localStorage.setItem('activeFilter', activeFilter);
-    switch (activeFilter) {
+    localStorage.setItem('activeFilter', id);
+    switch (id) {
       case 'filter-discussed':
         filteredPictures = filteredPictures.sort(function( a, b ) {
           return b.comments - a.comments;
@@ -166,6 +166,7 @@ define([
     }
     gallery.setPictures(filteredPictures);
     renderPictures(filteredPictures, currentPage, true);
+    activeFilter = id;
     windowLarge();
   }
   /**
@@ -184,8 +185,8 @@ define([
       filteredPictures = pictures.slice(0);
       gallery.setPictures(filteredPictures);
       renderPictures(filteredPictures, currentPage);
+      setActiveFilter(activeFilter, true);
       windowLarge();
-      setActiveFilter(activeFilter);
     });
     xhr.addEventListener('error', function() {
       container.classList.add('pictures-failure');
