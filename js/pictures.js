@@ -17,7 +17,7 @@ define([
    * Активный фильтр
    * @type {string}
    */
-  var activeFilter = 'filter-popular';
+  var activeFilter = localStorage.getItem('activeFilter') || 'filter-popular';
   /**
    * Массив объектов загруженных фотографий
    * @type {Photo[]}
@@ -125,7 +125,6 @@ define([
     }));
     container.appendChild(fragment);
   }
-  var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
   filters.classList.remove('hidden');
   /**
    * Установка выбранного фильтра
@@ -143,7 +142,8 @@ define([
     }
     document.querySelector('#' + id).setAttribute('checked', 'true');
     filteredPictures = pictures.slice(0);
-    switch (id) {
+    localStorage.setItem('activeFilter', activeFilter);
+    switch (activeFilter) {
       case 'filter-discussed':
         filteredPictures = filteredPictures.sort(function( a, b ) {
           return b.comments - a.comments;
@@ -152,12 +152,16 @@ define([
         break;
       case 'filter-new':
         filteredPictures = filteredPictures.sort(function(a, b) {
-          return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
+        var week2 = Number(new Date(new Date() - 14 * 24 * 60 * 60 * 1000));
         filteredPictures = filteredPictures.filter(function(picture) {
-          return new Date(picture.date).valueOf() >= week2;
+          return new Date(picture.date).getTime() >= week2;
         });
         activeFilter = 'filter-new';
+        break;
+      case 'filter-popular':
+        filteredPictures = pictures;
         break;
     }
     gallery.setPictures(filteredPictures);
@@ -181,6 +185,7 @@ define([
       gallery.setPictures(filteredPictures);
       renderPictures(filteredPictures, currentPage);
       windowLarge();
+      setActiveFilter(activeFilter);
     });
     xhr.addEventListener('error', function() {
       container.classList.add('pictures-failure');
