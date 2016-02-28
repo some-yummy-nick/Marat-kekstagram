@@ -159,10 +159,8 @@ define(function() {
     var picture;
     if (typeof i === 'number') {
       picture = this.pictures[i];
-      console.log(1);
     } else {
       picture = this.pictures[this.getNumberPicture(i)];
-      console.log(2);
     }
     this.photo.src = picture.url;
     this.likes.querySelector('.likes-count').textContent = picture.likes;

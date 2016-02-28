@@ -169,10 +169,13 @@ define([
     activeFilter = id;
     windowLarge();
   }
-  var hashs = function() {
-    var regexp = /#photo\/(\S+)/;
-    if ( location.hash.match(regexp)) {
-      return gallery.render();
+  var checkHash = function() {
+    var regexp = location.hash.match(/#photo\/(\S+)/);
+    if (regexp) {
+      gallery.setCurrentPicture(regexp[1]);
+      gallery.show();
+    }else {
+      gallery.hide();
     }
   };
   /**
@@ -192,9 +195,11 @@ define([
       gallery.setPictures(filteredPictures);
       renderPictures(filteredPictures, currentPage);
       setActiveFilter(activeFilter, true);
-      hashs();
+      checkHash();
       windowLarge();
+      window.addEventListener('hashchange', checkHash);
     });
+
     xhr.addEventListener('error', function() {
       container.classList.add('pictures-failure');
     });
