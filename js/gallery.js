@@ -69,6 +69,12 @@ define(function() {
      * @private
      */
     this._onSetLike = this._onSetLike.bind(this);
+    /**
+     * Подписка на событие изменение адресной строки
+     * @type {function(this:Gallery)}
+     * @private
+     */
+    this._onHashChange = this._onHashChange.bind(this);
   };
   /** @enum {number} */
   var KEYCODE = {
@@ -83,7 +89,7 @@ define(function() {
   Gallery.prototype.render = function() {
     var regexp = /#photo\/(\S+)/;
     location.hash = location.hash.match(regexp) ? '' : 'photo/' + this.pictures[this.currentPicture].url;
-    window.addEventListener('hashchange', this._onHashChange.bind(this));
+    window.addEventListener('hashchange', this._onHashChange);
     this.restoreFromHash.bind(this);
   };
   /**
@@ -122,6 +128,7 @@ define(function() {
     this.photo.removeEventListener('click', this._onPhotoClick);
     this.likes.removeEventListener('click', this._onSetLike);
     window.removeEventListener('keydown', this._onDocumentKeyDown);
+    window.removeEventListener('hashchange', this._onHashChange);
   };
   /**
    * Метод события нажатия на клавишу клавиатуры
@@ -135,9 +142,11 @@ define(function() {
       case KEYCODE.ESC:
         location.hash = '';
         break;
-      case KEYCODE.LEFT: this.setPrevPictureIndex();
+      case KEYCODE.LEFT:
+        this.setCurrentPicture(this.currentPicture - 1);
         break;
-      case KEYCODE.RIGHT:this.setNextPictureIndex();
+      case KEYCODE.RIGHT:
+        this.setCurrentPicture(this.currentPicture + 1);
         break;
     }
     this.setCurrentPicture(this.currentPicture);
@@ -156,6 +165,7 @@ define(function() {
    *@param {number|string} i - индекс фотографии в массиве или путь до фотографии
    */
   Gallery.prototype.setCurrentPicture = function(i) {
+    this.currentPicture = i;
     var picture;
     if (typeof i === 'number') {
       picture = this.pictures[i];
@@ -188,8 +198,8 @@ define(function() {
    * @private
    */
   Gallery.prototype._onPhotoClick = function() {
-    this.setCurrentPicture(this.currentPicture);
-    this.setNextPictureIndex();
+    this.setCurrentPicture(this.currentPicture + 1);
+    //this.setNextPictureIndex();
   };
   /**
    * Метод устанавливает объект-фотографию из JSON
@@ -212,25 +222,6 @@ define(function() {
         this.currentPicture = i;
         return i;
       }
-    }
-  };
-  /**
-   * Метод устанавливает отображаемой следующюю фотографию
-   * @method
-   */
-  Gallery.prototype.setNextPictureIndex = function() {
-    if (this.pictures[this.currentPicture + 1]) {
-      location.hash = 'photo/' + this.pictures[++this.currentPicture].url;
-    }
-
-  };
-  /**
-   * Метод устанавливает отображаемой предыдущую фотографию
-   * @method
-   */
-  Gallery.prototype.setPrevPictureIndex = function() {
-    if (this.pictures[this.currentPicture - 1]) {
-      location.hash = 'photo/' + this.pictures[--this.currentPicture].url;
     }
   };
   /**
