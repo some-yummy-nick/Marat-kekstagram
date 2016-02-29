@@ -183,6 +183,7 @@ define([
    */
   function getPictures() {
     container.classList.add('pictures-loading');
+    window.removeEventListener('hashchange', this._onHashChange);
     var imageLoadTimeout;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://o0.github.io/assets/json/pictures.json');
