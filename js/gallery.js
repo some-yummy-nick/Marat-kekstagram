@@ -89,7 +89,6 @@ define(function() {
   Gallery.prototype.render = function() {
     var regexp = /#photo\/(\S+)/;
     location.hash = location.hash.match(regexp) ? '' : 'photo/' + this.pictures[this.currentPicture].url;
-    window.addEventListener('hashchange', this._onHashChange);
     this.restoreFromHash.bind(this);
   };
   /**

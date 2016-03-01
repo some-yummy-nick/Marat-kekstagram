@@ -183,7 +183,6 @@ define([
    */
   function getPictures() {
     container.classList.add('pictures-loading');
-    window.removeEventListener('hashchange', this._onHashChange);
     var imageLoadTimeout;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://o0.github.io/assets/json/pictures.json');
@@ -198,7 +197,6 @@ define([
       setActiveFilter(activeFilter, true);
       checkHash();
       windowLarge();
-      window.addEventListener('hashchange', checkHash);
     });
 
     xhr.addEventListener('error', function() {
@@ -211,4 +209,5 @@ define([
     }, IMAGE_TIMEOUT);
     xhr.send();
   }
+  window.addEventListener('hashchange', checkHash);
 });
