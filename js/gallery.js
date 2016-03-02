@@ -199,7 +199,8 @@ define(function() {
    */
   Gallery.prototype._onPhotoClick = function() {
     this.setCurrentPicture(this.currentPicture + 1);
-    //this.setNextPictureIndex();
+    location.hash = 'photo/' + this.pictures[this.currentPicture].url;
+
   };
   /**
    * Метод устанавливает объект-фотографию из JSON

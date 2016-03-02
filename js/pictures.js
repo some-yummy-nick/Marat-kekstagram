@@ -197,7 +197,6 @@ define([
       setActiveFilter(activeFilter, true);
       checkHash();
       windowLarge();
-      window.addEventListener('hashchange', checkHash);
     });
 
     xhr.addEventListener('error', function() {
@@ -210,4 +209,5 @@ define([
     }, IMAGE_TIMEOUT);
     xhr.send();
   }
+  window.addEventListener('hashchange', checkHash);
 });
