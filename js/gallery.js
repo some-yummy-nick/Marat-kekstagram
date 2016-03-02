@@ -89,6 +89,7 @@ define(function() {
   Gallery.prototype.render = function() {
     var regexp = /#photo\/(\S+)/;
     location.hash = location.hash.match(regexp) ? '' : 'photo/' + this.pictures[this.currentPicture].url;
+    window.addEventListener('hashchange', this._onHashChange);
     this.restoreFromHash.bind(this);
   };
   /**
@@ -127,6 +128,7 @@ define(function() {
     this.photo.removeEventListener('click', this._onPhotoClick);
     this.likes.removeEventListener('click', this._onSetLike);
     window.removeEventListener('keydown', this._onDocumentKeyDown);
+    window.removeEventListener('hashchange', this._onHashChange);
   };
   /**
    * Метод события нажатия на клавишу клавиатуры
@@ -173,7 +175,7 @@ define(function() {
     this.photo.src = picture.url;
     this.likes.querySelector('.likes-count').textContent = picture.likes;
     this.comments.querySelector('.comments-count').textContent = picture.comments;
-    location.hash = 'photo/' + this.pictures[this.currentPicture].url;
+
     if (picture.setLike === true) {
       this.likesCount.classList.add('likes-count-liked');
     } else {
@@ -197,6 +199,7 @@ define(function() {
    */
   Gallery.prototype._onPhotoClick = function() {
     this.setCurrentPicture(this.currentPicture + 1);
+    //this.setNextPictureIndex();
   };
   /**
    * Метод устанавливает объект-фотографию из JSON
