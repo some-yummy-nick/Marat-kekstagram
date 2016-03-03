@@ -119,7 +119,7 @@ define([
       container.appendChild(photoElement.element);
       photoElement.onClick = function() {
         gallery.setData(photoElement.getData());
-        gallery.render();
+        location.hash = '#photo' + '/' + picture.url;
       };
       return photoElement;
     }));
@@ -169,6 +169,15 @@ define([
     activeFilter = id;
     windowLarge();
   }
+  var checkHash = function() {
+    var regexp = location.hash.match(/#photo\/(\S+)/);
+    if (regexp) {
+      gallery.setCurrentPicture(regexp[1]);
+      gallery.show();
+    }else {
+      gallery.hide();
+    }
+  };
   /**
    * Загрузка списка картинок
    */
@@ -186,8 +195,10 @@ define([
       gallery.setPictures(filteredPictures);
       renderPictures(filteredPictures, currentPage);
       setActiveFilter(activeFilter, true);
+      checkHash();
       windowLarge();
     });
+
     xhr.addEventListener('error', function() {
       container.classList.add('pictures-failure');
     });
@@ -198,4 +209,5 @@ define([
     }, IMAGE_TIMEOUT);
     xhr.send();
   }
+  window.addEventListener('hashchange', checkHash);
 });
